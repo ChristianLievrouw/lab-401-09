@@ -25,11 +25,25 @@ namespace ManhattanTests
         {
             Assert.Equal(147, root.features.Count());
         }
-
         [Fact]
-        public void Num_of_non_empty()
+        public void Num_of_neighborhood_not_dup()
         {
-        
+            IEnumerable<string> notNull =
+                from x in root.features
+                where x.properties.neighborhood.Length > 0
+                select x.properties.neighborhood;
+
+            Assert.Equal(143, notNull.Count());
+        }
+        [Fact]
+        public void Output39RemoveDuplicateNeighborhoods()
+        {
+            IEnumerable<string> nonDuplicates = root.features
+                .Select(x => x.properties.neighborhood)
+                .Where(neighborhood => !neighborhood.Equals(""))
+                .Distinct();
+
+            Assert.Equal(39, nonDuplicates.Count());
         }
     }
     public class ManhattanData
